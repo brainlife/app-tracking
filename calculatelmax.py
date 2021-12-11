@@ -20,5 +20,5 @@ lmax=0
 while (lmax+3)*(lmax+4)/2 <= count:
        lmax+=2
 
-print lmax
+print(lmax)
 
