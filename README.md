@@ -3,6 +3,36 @@
 
 # app-tracking
 
+<!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
+
+**Tracks whole-brain streamlines from single-shell DWI with MRtrix 0.2.12 using DT_STREAM, SD_STREAM and SD_PROB, outputting three .tck tractograms and a reconstruction.**
+
+Fits a tensor and a constrained spherical deconvolution model (lmax auto-calculated from the bvals if not given), builds a white-matter mask from FreeSurfer aparc+aseg registered to the b0 with FSL flirt, and runs streamtrack with three algorithms seeded and masked in white matter. Use it to obtain whole-brain tractograms for comparison of tracking methods or as input to tract segmentation. Needs a FreeSurfer run of the same subject. The code loads MRtrix, FreeSurfer and FSL as HPC modules, so it is tied to that environment.
+
+Run it on brainlife.io: [https://doi.org/10.25663/bl.app.105](https://doi.org/10.25663/bl.app.105)
+
+| Input | Datatype | Required | Description |
+|---|---|---|---|
+| `dwi` | `neuro/dwi` (single_shell) | yes | Single-shell diffusion-weighted image with bvals and bvecs. Single shell (datatype tag single_shell). |
+| `freesurfer` | `neuro/freesurfer` | yes | FreeSurfer recon-all output of the same subject; aparc+aseg is used to build the white-matter mask. Should be roughly aligned to the DWI; the white-matter mask is brought into DWI space with FSL flirt. |
+
+| Output | Datatype | Description |
+|---|---|---|
+| `dt_stream` | `neuro/track/tck` | Whole-brain tractogram from tensor-based deterministic tracking (DT_STREAM). |
+| `sd_stream` | `neuro/track/tck` | Whole-brain tractogram from CSD-based deterministic tracking (SD_STREAM). |
+| `sd_prob` | `neuro/track/tck` | Whole-brain tractogram from CSD-based probabilistic tracking (SD_PROB). |
+| `recon` | `neuro/recon` | Model outputs: CSD coefficients, FA, tensor, white-matter mask and brain mask. |
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `lmax` | number |  | Maximum spherical harmonic order for the CSD fit; leave empty to calculate it from the bvals. |
+| `fibers` | number | `500000` | set the desired number of tracks. streamtrack will continue to generate tracks until this number of tracks have been selected and written to the output file. |
+| `fibers_max` | number | `1000000` | set the maximum number of tracks to generate. streamtrack will not generate more tracks than this number, even if the desired number of tracks hasn't yet been reached (default is 100 x fibers). Specifying zero for this option removes any limit - the algorithm will keep generating tracks until the number required has been reached |
+
+Runtime: container `brainlife/dipy:0.14.1`; 8 CPUs.
+
+<!-- brainlife-app:end -->
+
 This service runs mrtrix tracking using SD_PROB, SD_STREAM, and DT_STREAM algorithms. It generates 3 separate whole brain tracking output for each algorithms.
 
 ### Authors
