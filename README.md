@@ -10,7 +10,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-lightgrey.svg" alt="MIT license"></a>
 </p>
 
-## 🧠 At a glance
+## At a glance
 
 <!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
 
@@ -20,20 +20,20 @@ Fits a tensor and a constrained spherical deconvolution model (lmax auto-calcula
 
 | | |
 |---|---|
-| 📥 **Inputs** | `neuro/dwi` · `neuro/freesurfer` |
-| 📤 **Outputs** | `neuro/track/tck` ×3 · `neuro/recon` |
-| 🐳 **Container** | `brainlife/dipy:0.14.1` |
-| ⚙️ **Resources** | 8 CPUs |
-| 🔗 **Run it** | [doi.org/10.25663/bl.app.105](https://doi.org/10.25663/bl.app.105) |
+| **Inputs** | `neuro/dwi` · `neuro/freesurfer` |
+| **Outputs** | `neuro/track/tck` ×3 · `neuro/recon` |
+| **Container** | `brainlife/dipy:0.14.1` |
+| **Resources** | 8 CPUs |
+| **Run it** | [doi.org/10.25663/bl.app.105](https://doi.org/10.25663/bl.app.105) |
 
-#### 📥 Inputs
+#### Inputs
 
 | Input | Datatype | Required | Description |
 |---|---|---|---|
 | `dwi` | `neuro/dwi` (single_shell) | yes | Single-shell diffusion-weighted image with bvals and bvecs. Single shell (datatype tag single_shell). |
 | `freesurfer` | `neuro/freesurfer` | yes | FreeSurfer recon-all output of the same subject; aparc+aseg is used to build the white-matter mask. Should be roughly aligned to the DWI; the white-matter mask is brought into DWI space with FSL flirt. |
 
-#### 📤 Outputs
+#### Outputs
 
 | Output | Datatype | Description |
 |---|---|---|
@@ -43,7 +43,7 @@ Fits a tensor and a constrained spherical deconvolution model (lmax auto-calcula
 | `recon` | `neuro/recon` | Model outputs: CSD coefficients, FA, tensor, white-matter mask and brain mask. |
 
 <details>
-<summary><b>⚙️ Parameters</b> (3)</summary>
+<summary><b>Parameters</b> (3)</summary>
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -55,7 +55,7 @@ Fits a tensor and a constrained spherical deconvolution model (lmax auto-calcula
 
 <!-- brainlife-app:end -->
 
-## 🏷️ Versions on brainlife.io
+## Versions on brainlife.io
 
 This repository hosts two Apps built from the same branch; they differ only in the diffusion input they take.
 
@@ -64,9 +64,9 @@ This repository hosts two Apps built from the same branch; they differ only in t
 | MRtrix2 Tracking (dwi) | `neuro/dwi` (single shell) | [`1.5`](https://github.com/brainlife/app-tracking/tree/1.5) | [doi:10.25663/bl.app.105](https://doi.org/10.25663/bl.app.105) | current |
 | MRtrix2 Tracking with dtiInit | `neuro/dtiinit` | [`1.5`](https://github.com/brainlife/app-tracking/tree/1.5) | [doi:10.25663/bl.app.59](https://doi.org/10.25663/bl.app.59) | available |
 
-## 🚀 Running the App
+## Running the App
 
-### ☁️ On brainlife.io
+### On brainlife.io
 
 Open the App for your input type, [doi.org/10.25663/bl.app.105](https://doi.org/10.25663/bl.app.105) for a single-shell DWI or [doi.org/10.25663/bl.app.59](https://doi.org/10.25663/bl.app.59) for a dtiInit output (its aligned DWI, bvals and bvecs listed in `dt6.json` are used), choose the FreeSurfer output of the same subject, set the parameters and press **Execute**.
 
@@ -76,7 +76,7 @@ Open the App for your input type, [doi.org/10.25663/bl.app.105](https://doi.org/
 
 The App archives one `neuro/recon` dataset and three `neuro/track/tck` datasets, tagged `dt_stream`, `sd_stream` and `sd_prob`, which can be compared or passed to tract segmentation Apps.
 
-### 💻 Locally
+### Locally
 
 This App loads MRtrix 0.2.12, FreeSurfer, FSL and Python as HPC environment modules (`module load`), so it is tied to that environment. You also need [Singularity/Apptainer](https://apptainer.org/) (DIPY 0.14.1 runs from `brainlife/dipy:0.14.1`) and [`jq`](https://jqlang.github.io/jq/).
 
@@ -100,7 +100,7 @@ This App loads MRtrix 0.2.12, FreeSurfer, FSL and Python as HPC environment modu
    ./main
    ```
 
-### 🧪 Sample data
+### Sample data
 
 Download a sample DWI and FreeSurfer output from brainlife.io with the [brainlife CLI](https://github.com/brainlife/cli):
 
@@ -112,7 +112,7 @@ bl dataset download 5a050a00eec2b300611abff3 && mv 5a050a00eec2b300611abff3 inpu
 bl dataset download 5a065cc75ab38300be518f51 && mv 5a065cc75ab38300be518f51 input/freesurfer
 ```
 
-## 📦 Outputs
+## Outputs
 
 The App builds a white-matter mask from the FreeSurfer `aparc+aseg` and brings it to the DWI with FSL `flirt`, makes a brain mask from the DWI, fits a tensor (`dwi2tensor`), estimates the single-fibre response from high-FA white matter and fits CSD (`csdeconv`). It then runs `streamtrack` with each algorithm, seeded and masked in white matter.
 
@@ -130,11 +130,11 @@ brainmask.nii.gz       DWI brain mask            ┘
 product.json           track_info and tractography metadata for each tractogram
 ```
 
-## 🩺 Troubleshooting
+## Troubleshooting
 
 - **The white-matter mask does not cover the DWI**: the FreeSurfer output must be roughly aligned to the DWI; the mask is only registered to the mean b0 with `flirt`.
 
-## 📚 Citing
+## Citing
 
 > [!TIP]
 > If you use this App in your work, please cite the App, the software it builds on and brainlife.io (below). GitHub's **Cite this repository** button gives the App citation in APA and BibTeX.
@@ -147,7 +147,7 @@ product.json           track_info and tractography metadata for each tractogram
 - Hayashi S, Caron BA, Heinsfeld AS, et al. brainlife.io: a decentralized and open-source cloud platform to support neuroscience research. *Nature Methods* 21:809–813 (2024). [doi:10.1038/s41592-024-02237-2](https://doi.org/10.1038/s41592-024-02237-2)
 - Avesani P, McPherson B, Hayashi S, et al. The open diffusion data derivatives, brain data upcycling via integrated publishing of derivatives and reproducible open cloud services. *Scientific Data* 6:69 (2019). [doi:10.1038/s41597-019-0073-y](https://doi.org/10.1038/s41597-019-0073-y)
 
-## 👥 Authors
+## Authors
 
 - Brent McPherson
 - Lindsey Kitchell
@@ -155,7 +155,7 @@ product.json           track_info and tractography metadata for each tractogram
 - Franco Pestilli (project director)
 - Paolo Avesani
 
-## 💰 Funding
+## Funding
 
 [![Wellcome-226486/Z/22/Z](https://img.shields.io/badge/Wellcome-226486%2FZ%2F22%2FZ-purple.svg)](https://wellcome.org/)
 [![NIH-NINDS-U24NS140384](https://img.shields.io/badge/NIH_NINDS-U24NS140384-green.svg)](https://reporter.nih.gov/project-details/11261037)
@@ -174,6 +174,6 @@ product.json           track_info and tractography metadata for each tractogram
 
 <sub>brainlife.io is publicly funded, and acknowledging that support helps keep it running. This App was developed with support from Wellcome, the U.S. National Institutes of Health (including the BRAIN Initiative BRAIN CONNECTS program: The Axonal Projectome EXchange, U24NS140384, and the Center for Mesoscale Connectomics, UM1NS132207) and the U.S. National Science Foundation.</sub>
 
-## ⚖️ License
+## License
 
 [MIT](LICENSE). MRtrix, FreeSurfer, FSL and DIPY are distributed under their own licenses.
